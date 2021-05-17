@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Photo;
+use App\Models\Photo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
-    public function upload(Request $request){
+    public function uploads(Request $request){
 
         $uploadedFile=$request->file('file');
         $filename=time().$uploadedFile->getClientOriginalName();
         $original_name=$uploadedFile->getClientOriginalName();
         Storage::disk('local')->putFileas(
-            'public/photos',$uploadedFile,$filename
+            'public/photos/'.Carbon::now()->year.'/admin',$uploadedFile,$filename
         );
         $photo=new Photo();
         $photo->original_name=$original_name;
